@@ -22,7 +22,7 @@ return [
         'http://localhost:3001',
         'https://desamenur.com',
         'https://admin.desamenur.com',
-        'https://frontend-admin-desa-menur-shulhan23s-projects.vercel.app' // jika masih pakai domain bawaan vercel
+        'https://frontend-admin-desa-menur-shulhan23s-projects.vercel.app' 
     ],
     'allowed_headers' => ['*'],
     'supports_credentials' => true,
