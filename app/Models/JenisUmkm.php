@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str; // ✅ Tambahkan ini!
 
 class JenisUmkm extends Model
 {
-
     protected $table = 'jenis_umkm';
 
     protected $fillable = ['nama_jenis'];
@@ -26,5 +26,4 @@ class JenisUmkm extends Model
             $jenis->slug = Str::slug($jenis->nama_jenis);
         });
     }
-
 }
