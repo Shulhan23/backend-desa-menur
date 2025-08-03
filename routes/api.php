@@ -23,8 +23,8 @@ Route::prefix('v1')->group(function () {
     //  Login tanpa throttle
     // Route::post('/login', [AuthController::class, 'login']);
 
-    // 📰 Endpoint berita tanpa throttle
-    Route::middleware(['verify.origin', 'skipThrottle'])->group(function () {
+    // 📰 Endpoint berita tanpa throttle dan 'verify.origin'
+    Route::middleware(['skipThrottle'])->group(function () {
         Route::get('/berita', [BeritaController::class, 'index']);  
         Route::get('/berita-by-id/{id}', [BeritaController::class, 'showById']);
         Route::get('/berita/{slug}', [BeritaController::class, 'showBySlug']);
@@ -34,8 +34,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/jenis-umkm/{slug}', [JenisUmkmController::class, 'showBySlug']);
     });
 
-    //  Endpoint yang butuh login
-    Route::middleware('auth:sanctum','verify.origin')->group(function () {
+    //  Endpoint yang butuh login ,'verify.origin' dihilangkan
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/berita', [BeritaController::class, 'store']);
         Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
         Route::post('/berita/{id}', [BeritaController::class, 'update']);
