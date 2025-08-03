@@ -24,7 +24,7 @@ Route::prefix('v1')->group(function () {
     // Route::post('/login', [AuthController::class, 'login']);
 
     // 📰 Endpoint berita tanpa throttle
-    Route::middleware(['verify.origin', 'skipThrottle'])->group(function () {
+    Route::middleware(['skipThrottle'])->group(function () {
         Route::get('/berita', [BeritaController::class, 'index']);  
         Route::get('/berita-by-id/{id}', [BeritaController::class, 'showById']);
         Route::get('/berita/{slug}', [BeritaController::class, 'showBySlug']);
@@ -35,7 +35,7 @@ Route::prefix('v1')->group(function () {
     });
 
     //  Endpoint yang butuh login
-    Route::middleware('auth:sanctum','verify.origin')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/berita', [BeritaController::class, 'store']);
         Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
         Route::post('/berita/{id}', [BeritaController::class, 'update']);
