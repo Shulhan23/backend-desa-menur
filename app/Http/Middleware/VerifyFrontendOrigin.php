@@ -23,6 +23,7 @@ class VerifyFrontendOrigin
             'http://localhost:3000',
             'https://desamenur.com',
             'https://admin.desamenur.com',
+            'https://frontend-admin-desa-menur-shulhan23s-projects.vercel.app'
         ];
 
         // Jika origin null, izinkan hanya dari localhost (proxy internal)
