@@ -12,16 +12,18 @@ return new class extends Migration
      * @return void
      */
     public function up()
-{
-// database/migrations/xxxx_xx_xx_create_beritas_table.php
-    Schema::create('beritas', function (Blueprint $table) {
+    {
+    // database/migrations/xxxx_xx_xx_create_konten_beritas_table.php
+    Schema::create('konten_beritas', function (Blueprint $table) {
         $table->id();
-        $table->string('judul');
+        $table->foreignId('berita_id')->constrained('beritas')->onDelete('cascade');
+        $table->enum('tipe', ['teks', 'gambar']);
+        $table->text('konten'); // path gambar atau isi teks
+        $table->integer('urutan');
         $table->timestamps();
     });
 
-}
-
+    }
 
     /**
      * Reverse the migrations.
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('beritas');
+        Schema::dropIfExists('konten_beritas');
     }
 };

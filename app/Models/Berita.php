@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Berita extends Model
 {
-    protected $fillable = ['judul', 'isi', 'gambar'];
+    protected $fillable = ['judul', 'slug']; // ✅ tambahkan 'slug'
+
+    public function konten()
+    {
+        return $this->hasMany(KontenBerita::class)->orderBy('urutan');
+    }
 }

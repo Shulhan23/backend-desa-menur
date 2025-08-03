@@ -15,20 +15,16 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
-
+    'paths' => ['api/*', 'login', 'logout', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-
-    'allowed_origins' => ['http://localhost:3000'],
-
-    'allowed_origins_patterns' => [],
-
+    'allowed_origins' => [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'https://desamenur.com',
+        'https://admin.desamenur.com' // jika masih pakai domain bawaan vercel
+    ],
     'allowed_headers' => ['*'],
-
-    'exposed_headers' => [],
-
-    'max_age' => 0,
-
     'supports_credentials' => true,
+
 
 ];

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\UmkmController;
+use App\Http\Controllers\JenisUmkmController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,33 +20,59 @@ use App\Http\Controllers\BeritaController;
 
 Route::prefix('v1')->group(function () {
 
-    // 🔐 Throttle login saja
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+    //  Login tanpa throttle
+    // Route::post('/login', [AuthController::class, 'login']);
 
     // 📰 Endpoint berita tanpa throttle
-    Route::middleware(['skipThrottle'])->group(function () {
-        Route::get('/berita', [BeritaController::class, 'index']);
-        Route::get('/berita/{id}', [BeritaController::class, 'show']);
+    Route::middleware(['verify.origin', 'skipThrottle'])->group(function () {
+        Route::get('/berita', [BeritaController::class, 'index']);  
+        Route::get('/berita-by-id/{id}', [BeritaController::class, 'showById']);
+        Route::get('/berita/{slug}', [BeritaController::class, 'showBySlug']);
+        Route::get('/umkm', [UmkmController::class, 'index']);
+        Route::get('/umkm/{id}', [UmkmController::class, 'show']);
+        Route::get('/jenis-umkm', [JenisUmkmController::class, 'index']);
+        Route::get('/jenis-umkm/{slug}', [JenisUmkmController::class, 'showBySlug']);
     });
 
-    // 🔒 Endpoint yang butuh login
-    Route::middleware('auth:sanctum')->group(function () {
+    //  Endpoint yang butuh login
+    Route::middleware('auth:sanctum','verify.origin')->group(function () {
         Route::post('/berita', [BeritaController::class, 'store']);
         Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
-        Route::post('/logout', [AuthController::class, 'logout']    );
-        Route::post('/change-password', function (Request $request) {
-            $request->validate([
-                'password' => 'required|string|min:8|confirmed',
-            ]);
+        Route::post('/berita/{id}', [BeritaController::class, 'update']);
+        Route::match(['put', 'patch'], '/berita/{id}', [BeritaController::class, 'update']);
 
-            $admin = auth()->user();
-            $admin->update([
-                'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-            ]);
+    //jenis  UMKM
+        Route::post('/jenis-umkm', [JenisUmkmController::class, 'store']);
+        Route::delete('/jenis-umkm/{id}', [JenisUmkmController::class, 'destroy']);
+        Route::put('/jenis-umkm/{id}', [JenisUmkmController::class, 'update']);
 
-            return response()->json(['message' => 'Password berhasil diubah']);
-        });
+    // UMKM
+        Route::post('/umkm', [UmkmController::class, 'store']);
+        Route::match(['put', 'patch'], '/umkm/{id}', [UmkmController::class, 'update']);
+        Route::delete('/umkm/{id}', [UmkmController::class, 'destroy']);
+
+    // Tambahan penting untuk verifikasi login dari frontend
+    Route::get('/check-auth', function (Request $request) {
+        return response()->json([
+            'authenticated' => true,
+            'user' => $request->user()
+        ]);
     });
+
+    Route::post('/change-password', function (Request $request) {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $admin = auth()->user();
+        $admin->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json(['message' => 'Password berhasil diubah']);
+    });
+});
+
 
     // ❌ Jika salah URL
     Route::fallback(function () {
@@ -53,4 +81,5 @@ Route::prefix('v1')->group(function () {
         ], 404);
     });
 });
+
 

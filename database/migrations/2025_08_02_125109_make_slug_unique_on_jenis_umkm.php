@@ -12,16 +12,12 @@ return new class extends Migration
      * @return void
      */
     public function up()
-{
-// database/migrations/xxxx_xx_xx_create_beritas_table.php
-    Schema::create('beritas', function (Blueprint $table) {
-        $table->id();
-        $table->string('judul');
-        $table->timestamps();
-    });
+    {
+        Schema::table('jenis_umkm', function (Blueprint $table) {
+    $table->unique('slug');
+});
 
-}
-
+    }
 
     /**
      * Reverse the migrations.
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('beritas');
+        //
     }
 };
