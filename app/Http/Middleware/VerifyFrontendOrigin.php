@@ -33,6 +33,9 @@ class VerifyFrontendOrigin
     $isAllowed = in_array($origin, $allowedOrigins) ||
         collect($allowedOriginPrefixes)->contains(fn($prefix) => Str::startsWith($origin, $prefix));
 
+    \Log::info('Incoming origin: ' . $origin);
+    \Log::info('Client IP: ' . $request->ip());
+
     if (is_null($origin)) {
         if ($request->ip() !== '127.0.0.1' && $request->ip() !== '::1') {
             return response()->json(['message' => 'Origin null not allowed'], 403);
