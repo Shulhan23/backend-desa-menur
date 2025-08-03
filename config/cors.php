@@ -21,7 +21,8 @@ return [
         'http://localhost:3000',
         'http://localhost:3001',
         'https://desamenur.com',
-        'https://admin.desamenur.com' // jika masih pakai domain bawaan vercel
+        'https://admin.desamenur.com',
+        'https://frontend-admin-desa-menur-shulhan23s-projects.vercel.app' // jika masih pakai domain bawaan vercel
     ],
     'allowed_headers' => ['*'],
     'supports_credentials' => true,
